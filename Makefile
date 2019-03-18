@@ -7,8 +7,13 @@ Compile and run each case.
 
 Examples
 --------
+# Simple
+$ make dir=lambda
+# Other commands
+$ make help
+$ make compile
 $ make run
-$ make run dir=lambda
+$ make clean
 
 endef
 
@@ -16,8 +21,14 @@ export STR_HELP
 
 sources := $(wildcard $(dir)/*.cpp)
 objects := $(patsubst %.cpp,%.o,$(sources))
+target := $(dir)/main.out
 
-.PHONY: help compile run clean
+.PHONY: compile clean help run 
+
+
+run: compile
+	@$(target)
+
 
 help:
 	@echo "$$STR_HELP"
@@ -30,7 +41,7 @@ help:
 	$(gcc) $< -c -o $@
 
 
-$(dir)/%.out: $(objects)
+$(target): $(objects)
 	$(gcc) $< -o $@
 
 
@@ -38,9 +49,4 @@ clean:
 	@rm -f $(objects)
 
 
-compile: $(dir)/main.out
-
-
-run: compile
-	@$(dir)/main.out
-
+compile: $(target)
