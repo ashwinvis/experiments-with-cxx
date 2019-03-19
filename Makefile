@@ -1,6 +1,6 @@
-dir ?= lambda
+dir ?= hello
 std ?= c++14
-gcc := g++ -std=$(std)
+gcc := g++ -Wall -std=$(std)
 
 define STR_HELP
 Compile and run each case.
@@ -21,6 +21,7 @@ export STR_HELP
 
 sources := $(wildcard $(dir)/*.cpp)
 objects := $(patsubst %.cpp,%.o,$(sources))
+asm := $(patsubst %.cpp,%.s,$(sources))
 target := $(dir)/main.out
 
 .PHONY: compile clean help run 
@@ -40,16 +41,22 @@ help:
 %.o: %.cpp
 	$(gcc) $< -c -o $@
 
+%.s: %.cpp
+	$(gcc) $< -O0 -S -o $@
 
 $(target): $(objects)
 	$(gcc) $< -o $@
 
 
 clean:
-	@rm -f $(objects) $(target)
+	@rm -f $(objects) $(target) $(asm)
 
 
 compile: $(target)
+
+
+asm: $(asm)
+	cat $(asm) | c++filt | vim -R +'set ft=asm' -
 
 
 clang-format:
