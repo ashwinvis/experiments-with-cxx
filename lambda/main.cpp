@@ -2,14 +2,12 @@
 #include <cstdio>
 #include <typeinfo>
 
-auto incr = [=](int &a) {++a;};
+auto incr = [=](int &a) { ++a; };
 
-auto typeof = [=](auto var) {
-  return typeid(var).name();
-};
+auto typeof = [=](auto var) { return typeid(var).name(); };
 
 int main() {
-  int a=2;
+  int a = 2;
 
   printf("Value of a initially: %d\n", a);
   incr(a);

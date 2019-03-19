@@ -27,7 +27,7 @@ target := $(dir)/main.out
 
 
 run: compile
-	@$(target)
+	$(target)
 
 
 help:
@@ -46,7 +46,11 @@ $(target): $(objects)
 
 
 clean:
-	@rm -f $(objects)
+	@rm -f $(objects) $(target)
 
 
 compile: $(target)
+
+
+clang-format:
+	find -iname '*.hpp' -o -iname '*.cpp' | xargs clang-format -i
